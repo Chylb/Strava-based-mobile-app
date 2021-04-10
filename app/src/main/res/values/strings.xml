@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">StravaBasedApp</string>
+    <string name="lastSync" />
+</resources>
