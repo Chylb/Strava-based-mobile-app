@@ -18,7 +18,7 @@ class ShowActActivity : AppCompatActivity() {
         setContentView(R.layout.activity_show_act)
 
         activitiesRecyclerView = findViewById(R.id.activitiesRecyclerView)
-        activitiesRecyclerView.layoutManager= LinearLayoutManager(this)
+        activitiesRecyclerView.layoutManager = LinearLayoutManager(this)
         adapter = ActivitiesAdapter(activitiesList, this)
         activitiesRecyclerView.adapter = adapter
 
@@ -28,10 +28,9 @@ class ShowActActivity : AppCompatActivity() {
     }
 
 
-    private fun extractActivities(activitiesList : JSONArray){
-//        for (i in 0 until activitiesList.length()) {
-//            val activity = activitiesList.getJSONObject(i).
-            val activity = activitiesList.getJSONObject(0).getJSONObject("nameValuePairs")
+    private fun extractActivities(activitiesList: JSONArray) {
+        for (i in 0 until activitiesList.length()) {
+            val activity = activitiesList.getJSONObject(i)
             val name = activity.getString("name")
             val distance = activity.getDouble("distance")
             val time = activity.getDouble("elapsed_time")
@@ -39,6 +38,6 @@ class ShowActActivity : AppCompatActivity() {
 
             val actObject = Activity(name, distanceVal = distance, timeVal = time, dateVal = date)
             adapter.dataSet.add(actObject)
-//        }
+        }
     }
 }
