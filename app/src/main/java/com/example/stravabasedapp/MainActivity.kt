@@ -48,18 +48,23 @@ class MainActivity : AppCompatActivity() {
         printButton.setOnClickListener {
             var activities =
                 getSharedPreferences("user", Context.MODE_PRIVATE).getString("activities", "[]")
-            val activityList = JSONArray(activities)
-            Log.wtf("myTag", "number of activities " + activityList.length())
-            //Log.wtf("myTag", activities)
-            Log.wtf(
-                "myTag",
-                getSharedPreferences("user", Context.MODE_PRIVATE).getString("athlete", "x")
-            )
-            Log.wtf(
-                "myTag",
-                getSharedPreferences("user", Context.MODE_PRIVATE).getString("access_token", "x")
-            )
-            Toast.makeText(this, activities, Toast.LENGTH_SHORT).show()
+//            val activityList = JSONArray(activities)
+            val intent = Intent(this, ShowActActivity::class.java).apply {
+                putExtra("activities", activities)
+            }
+            this.startActivity(intent)
+//
+//            Log.wtf("myTag", "number of activities " + activityList.length())
+//            //Log.wtf("myTag", activities)
+//            Log.wtf(
+//                "myTag",
+//                getSharedPreferences("user", Context.MODE_PRIVATE).getString("athlete", "x")
+//            )
+//            Log.wtf(
+//                "myTag",
+//                getSharedPreferences("user", Context.MODE_PRIVATE).getString("access_token", "x")
+//            )
+//            Toast.makeText(this, activities, Toast.LENGTH_SHORT).show()
         }
 
         logoutButton = findViewById(R.id.logoutButton)
