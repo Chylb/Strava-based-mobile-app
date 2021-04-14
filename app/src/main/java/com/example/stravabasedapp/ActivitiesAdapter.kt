@@ -1,7 +1,6 @@
 package com.example.stravabasedapp
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ class ActivitiesAdapter(var dataSet: MutableList<Activity>, val context: Context
         //val currencyName: TextView = view.findViewById(R.id.currencyName)
         val actName: TextView = view.findViewById(R.id.activityName)
         val distance: TextView = view.findViewById(R.id.distanceValue)
-        val pace: TextView = view.findViewById(R.id.paceValue)
+        val pace: TextView = view.findViewById(R.id.speedValue)
         val time: TextView = view.findViewById(R.id.timeValue)
     }
 
@@ -41,7 +40,8 @@ class ActivitiesAdapter(var dataSet: MutableList<Activity>, val context: Context
             activity.name, activity.date)
         viewHolder.distance.text = context.getString(R.string.distance,
             df.format(activity.distance))
-        viewHolder.pace.text = context.getString(R.string.pace, activity.pace)
+        viewHolder.pace.text = context.getString(R.string.speed,
+            df.format(activity.speed))
         viewHolder.time.text = context.getString(R.string.time, activity.timeHours, activity.timeMinutes)
     }
 

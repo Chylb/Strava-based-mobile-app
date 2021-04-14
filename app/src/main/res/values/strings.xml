@@ -9,9 +9,13 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="activityname">%1$s - %2$s</string>
     <string name="distanceLabel">Distance</string>
-    <string name="paceLabel">Pace</string>
+    <string name="speedLabel">Speed</string>
     <string name="timeLabel">Time</string>
     <string name="distance">%1$s km</string>
-    <string name="pace">%1$s /km</string>
+    <string name="speed">%1$s km/h</string>
     <string name="time">%1$dh %2$dm</string>
+    <string name="startActivity">Start activity!</string>
+    <string name="distanceTravelled">%1$d km</string>
+    <string name="speedAvg">%1%f km/h</string>
+    <string name="timePassed">%1$s</string>
 </resources>

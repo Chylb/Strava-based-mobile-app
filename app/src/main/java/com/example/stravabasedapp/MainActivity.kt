@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var syncButton: Button
     lateinit var printButton: Button
     lateinit var logoutButton: Button
+    lateinit var startActButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +92,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             this.startActivity(intent)
             finish()
+        }
+
+        startActButton = findViewById(R.id.startActivity)
+        startActButton.setOnClickListener{
+            val intent = Intent(this, StartActActivity::class.java)
+            this.startActivity(intent)
         }
     }
 

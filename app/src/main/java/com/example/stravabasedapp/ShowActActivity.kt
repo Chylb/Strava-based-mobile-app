@@ -35,8 +35,10 @@ class ShowActActivity : AppCompatActivity() {
             val distance = activity.getDouble("distance")
             val time = activity.getDouble("elapsed_time")
             val date = activity.getString("start_date")
+            val speed = activity.getDouble("average_speed")
 
-            val actObject = Activity(name, distanceVal = distance, timeVal = time, dateVal = date)
+            val actObject = Activity(name, distanceVal = distance, timeVal = time,
+                dateVal = date, speedVal = speed)
             adapter.dataSet.add(actObject)
         }
     }
