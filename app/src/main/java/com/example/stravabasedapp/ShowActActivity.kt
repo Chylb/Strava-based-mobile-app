@@ -22,24 +22,8 @@ class ShowActActivity : AppCompatActivity() {
         adapter = ActivitiesAdapter(activitiesList, this)
         activitiesRecyclerView.adapter = adapter
 
-        val act = intent.getStringExtra("activities")
-        val activityList = JSONArray(act)
-        extractActivities(activityList)
-    }
-
-
-    private fun extractActivities(activitiesList: JSONArray) {
-        for (i in 0 until activitiesList.length()) {
-            val activity = activitiesList.getJSONObject(i)
-            val name = activity.getString("name")
-            val distance = activity.getDouble("distance")
-            val time = activity.getDouble("elapsed_time")
-            val date = activity.getString("start_date")
-            val speed = activity.getDouble("average_speed")
-
-            val actObject = Activity(name, distanceVal = distance, timeVal = time,
-                dateVal = date, speedVal = speed)
-            adapter.dataSet.add(actObject)
+        for(act in ActStorage.activities.reversed()) {
+            adapter.dataSet.add(act)
         }
     }
 }
