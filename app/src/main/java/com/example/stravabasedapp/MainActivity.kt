@@ -25,26 +25,18 @@ class MainActivity : AppCompatActivity() {
     lateinit var syncButton: Button
     lateinit var printButton: Button
     lateinit var logoutButton: Button
-    lateinit var startActButton : Button
+    lateinit var startActButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.wtf("myTag", "creating main activity")
-        Log.wtf(
-            "myTag",
-            "is there token " + getSharedPreferences(
-                "user",
-                Context.MODE_PRIVATE
-            ).contains("access_token").toString()
-        )
         if (!getSharedPreferences("user", Context.MODE_PRIVATE).contains("access_token")) {
             val intent = Intent(this, LoginActivity::class.java)
             this.startActivity(intent)
             finish()
         }
-        Log.wtf("myTag", "inside main activity")
+        Log.wtf("myTag", "creating main activity")
         syncButton = findViewById(R.id.syncButton)
         syncButton.setOnClickListener {
             synchronizeActivities()
@@ -61,19 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         printButton = findViewById(R.id.printButton)
         printButton.setOnClickListener {
-            var activities =
-                getSharedPreferences("user", Context.MODE_PRIVATE).getString("activities", "[]")
-
-            //temporary activity count reduction
-            val activityArr = Gson().fromJson(activities, Array<JsonObject>::class.java)
-            var activityList = activityArr.toMutableList()
-            while (activityList.size > 10)
-                activityList.removeAt(0)
-            activities = Gson().toJson(activityList)
-
-            val intent = Intent(this, ShowActActivity::class.java).apply {
-                putExtra("activities", activities)
-            }
+            val intent = Intent(this, ShowActActivity::class.java)
             this.startActivity(intent)
         }
 
@@ -95,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         startActButton = findViewById(R.id.startActivity)
+
         startActButton.setOnClickListener{
             var permission = Manifest.permission.ACCESS_FINE_LOCATION
             var granted = PackageManager.PERMISSION_GRANTED
@@ -103,9 +84,38 @@ class MainActivity : AppCompatActivity() {
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(permission), 1)
             }
+
+        }
+
+        loadActivities()
+    }
+
+    //loads all activities from preferences to ActStorage
+    private fun loadActivities() {
+        val storedActivitiesJsonArray = JSONArray(
+            getSharedPreferences("user", Context.MODE_PRIVATE).getString(
+                "activities",
+                "[]"
+            )
+        )
+        ActStorage.activities.clear()
+        for (i in 0 until storedActivitiesJsonArray.length()) {
+            val activity = storedActivitiesJsonArray.getJSONObject(i)
+            val name = activity.getString("name")
+            val distance = activity.getDouble("distance")
+            val time = activity.getDouble("elapsed_time")
+            val date = activity.getString("start_date")
+            val speed = activity.getDouble("average_speed")
+
+            val actObject = Activity(
+                name, distanceVal = distance, timeVal = time,
+                dateVal = date, speedVal = speed
+            )
+            ActStorage.activities.add(actObject)
         }
     }
 
+    //downloads new activities and updates activity list stored in preferences. Then calls loadActivities().
     private fun synchronizeActivities() {
         val lastSync = getSharedPreferences("user", Context.MODE_PRIVATE).getLong("lastSync", 0)
         val activityList = mutableListOf<JsonObject>()
@@ -158,6 +168,7 @@ class MainActivity : AppCompatActivity() {
                             putLong("lastSync", System.currentTimeMillis() / 1000)
                             commit()
                         }
+                        loadActivities()
                         Toast.makeText(this, "Synced activities", Toast.LENGTH_SHORT).show()
                     } else
                         makeRequest(page + 1, after, activityList)
