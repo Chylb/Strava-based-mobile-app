@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StartActActivity">
+    tools:context=".TrackActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,6 +13,13 @@
         tools:layout_editor_absoluteX="118dp"
         tools:layout_editor_absoluteY="236dp">
 
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="2" />
+
         <TextView
             android:id="@+id/timeRunning"
             android:layout_width="match_parent"
@@ -20,33 +27,14 @@
             android:gravity="center"
             android:text="TIME" />
 
-        <EditText
-            android:id="@+id/editTextTime"
-            style="@style/Widget.AppCompat.AutoCompleteTextView"
+        <TextView
+            android:id="@+id/timePassed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:ems="10"
+            android:layout_margin="4dp"
+            android:layout_weight="0.2"
             android:gravity="center"
-            android:inputType="time"
             android:text="@string/timePassed"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/AvgSpeed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="AVERAGE SPEED" />
-
-        <TextView
-            android:id="@+id/avgSpeedVal"
-            style="@style/Widget.AppCompat.TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:text="@string/speedAvg"
             android:textSize="30sp" />
 
         <TextView
@@ -57,21 +45,24 @@
             android:text="DISTANCE" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/distance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_margin="4dp"
+            android:layout_weight="0.2"
             android:gravity="center"
             android:text="@string/distanceTravelled"
             android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/button"
+        <ToggleButton
+            android:id="@+id/startButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Stop!"
-            android:textSize="18sp" />
+            android:layout_marginBottom="-12dp"
+            android:layout_weight="0.3"
+            android:text="start"
+            android:textOff="START!"
+            android:textOn="STOP!" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

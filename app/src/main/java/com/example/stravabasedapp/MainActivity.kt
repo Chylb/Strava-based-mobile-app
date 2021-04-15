@@ -1,13 +1,16 @@
 package com.example.stravabasedapp
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -16,9 +19,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.json.JSONArray
-import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -96,8 +96,13 @@ class MainActivity : AppCompatActivity() {
 
         startActButton = findViewById(R.id.startActivity)
         startActButton.setOnClickListener{
-            val intent = Intent(this, StartActActivity::class.java)
-            this.startActivity(intent)
+            var permission = Manifest.permission.ACCESS_FINE_LOCATION
+            var granted = PackageManager.PERMISSION_GRANTED
+            if (ActivityCompat.checkSelfPermission(this, permission) == granted) {
+                startActivity(Intent(this, TrackActivity::class.java))
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(permission), 1)
+            }
         }
     }
 
