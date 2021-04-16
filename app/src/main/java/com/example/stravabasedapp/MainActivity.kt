@@ -20,7 +20,6 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.json.JSONArray
 
-
 class MainActivity : AppCompatActivity() {
     lateinit var syncButton: Button
     lateinit var printButton: Button
@@ -76,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         startActButton = findViewById(R.id.startActivity)
 
-        startActButton.setOnClickListener{
+        startActButton.setOnClickListener {
             var permission = Manifest.permission.ACCESS_FINE_LOCATION
             var granted = PackageManager.PERMISSION_GRANTED
             if (ActivityCompat.checkSelfPermission(this, permission) == granted) {
@@ -99,17 +98,31 @@ class MainActivity : AppCompatActivity() {
             )
         )
         ActStorage.activities.clear()
+
         for (i in 0 until storedActivitiesJsonArray.length()) {
             val activity = storedActivitiesJsonArray.getJSONObject(i)
             val name = activity.getString("name")
             val distance = activity.getDouble("distance")
-            val time = activity.getDouble("elapsed_time")
+            val elevationGain = activity.getInt("total_elevation_gain")
+            val type = activity.getString("type")
+            val movingTime = activity.getInt("moving_time")
+            val elapsedTime = activity.getInt("elapsed_time")
             val date = activity.getString("start_date")
             val speed = activity.getDouble("average_speed")
+            val maxSpeed = activity.getDouble("max_speed")
+
+            val map =  activity.getJSONObject("map")
+            var mapPolyline = ""
+            if(map.has("polyline")) {
+                mapPolyline = map.getString("polyline")
+            }
 
             val actObject = Activity(
-                name, distanceVal = distance, timeVal = time,
-                dateVal = date, speedVal = speed
+                name, type = type, dateVal = date,
+                distanceVal = distance, elevationGain = elevationGain,
+                movingTime = movingTime, elapsedTime = elapsedTime,
+                avgSpeed = speed, maxSpeed = maxSpeed,
+                mapPolyline = mapPolyline
             )
             ActStorage.activities.add(actObject)
         }

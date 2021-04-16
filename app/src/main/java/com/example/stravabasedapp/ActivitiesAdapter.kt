@@ -42,7 +42,7 @@ class ActivitiesAdapter(var dataSet: MutableList<Activity>, val context: Context
             df.format(activity.distance))
         viewHolder.pace.text = context.getString(R.string.speed,
             df.format(activity.speed))
-        viewHolder.time.text = context.getString(R.string.time, activity.timeHours, activity.timeMinutes)
+        viewHolder.time.text = secondsToString(activity.elapsedTime)
     }
 
     // Return the size of your dataset (invoked by the layout manager)

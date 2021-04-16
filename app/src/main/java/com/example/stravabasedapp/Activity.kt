@@ -1,17 +1,18 @@
 package com.example.stravabasedapp
 
 
-import kotlin.math.floor
-
-class Activity(var actName: String, var distanceVal: Double, var timeVal:Double,
-                var dateVal: String, val speedVal : Double){
+class Activity(
+    var actName: String, var type: String, var dateVal: String,
+    var distanceVal: Double, var elevationGain: Int,
+    var movingTime: Int, var elapsedTime: Int,
+    val avgSpeed: Double, var maxSpeed: Double,
+    val mapPolyline: String
+) {
     val name = actName
     val distance = distanceVal / 1000
 
-    val time = timeVal
-    val timeHours = floor(time / 3600).toInt()
-    val timeMinutes = (time - timeHours*3600).toInt()
+    val time = movingTime
 
     val date = dateVal.slice(0..9)
-    val speed = speedVal * 3.6
+    val speed = avgSpeed * 3.6
 }
