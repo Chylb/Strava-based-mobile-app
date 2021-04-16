@@ -1,6 +1,7 @@
 package com.example.stravabasedapp
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,9 +44,17 @@ class ActivitiesAdapter(var dataSet: MutableList<Activity>, val context: Context
         viewHolder.pace.text = context.getString(R.string.speed,
             df.format(activity.speed))
         viewHolder.time.text = secondsToString(activity.elapsedTime)
+
+        viewHolder.itemView.setOnClickListener { goToActDetails(activity) }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
+    private fun goToActDetails(activity: Activity) {
+        val intent = Intent(context, ActDetailsActivity::class.java).apply {
+            putExtra("id", activity.id)
+        }
+        context.startActivity(intent)
+    }
 }

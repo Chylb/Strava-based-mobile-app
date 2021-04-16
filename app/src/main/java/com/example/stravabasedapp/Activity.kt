@@ -2,7 +2,8 @@ package com.example.stravabasedapp
 
 
 class Activity(
-    var actName: String, var type: String, var dateVal: String,
+    var actName: String, val id: Long,
+    var type: String, var dateVal: String,
     var distanceVal: Double, var elevationGain: Int,
     var movingTime: Int, var elapsedTime: Int,
     val avgSpeed: Double, var maxSpeed: Double,

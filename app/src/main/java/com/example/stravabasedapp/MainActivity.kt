@@ -102,6 +102,7 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until storedActivitiesJsonArray.length()) {
             val activity = storedActivitiesJsonArray.getJSONObject(i)
             val name = activity.getString("name")
+            val id = activity.getLong("id")
             val distance = activity.getDouble("distance")
             val elevationGain = activity.getInt("total_elevation_gain")
             val type = activity.getString("type")
@@ -111,14 +112,15 @@ class MainActivity : AppCompatActivity() {
             val speed = activity.getDouble("average_speed")
             val maxSpeed = activity.getDouble("max_speed")
 
-            val map =  activity.getJSONObject("map")
+            val map = activity.getJSONObject("map")
             var mapPolyline = ""
-            if(map.has("polyline")) {
+            if (map.has("polyline")) {
                 mapPolyline = map.getString("polyline")
             }
 
             val actObject = Activity(
-                name, type = type, dateVal = date,
+                name, id = id,
+                type = type, dateVal = date,
                 distanceVal = distance, elevationGain = elevationGain,
                 movingTime = movingTime, elapsedTime = elapsedTime,
                 avgSpeed = speed, maxSpeed = maxSpeed,
