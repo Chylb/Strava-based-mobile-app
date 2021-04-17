@@ -43,13 +43,6 @@ class LoginActivity : AppCompatActivity() {
         Log.wtf("myTag", uri.toString())
         Log.wtf("myTag", code.toString())
 
-        Log.wtf(
-            "myTag",
-            "is there token " + getSharedPreferences(
-                "user",
-                Context.MODE_PRIVATE
-            ).contains("access_token").toString()
-        )
         if (uri != null && code != null)
             login(code)
     }

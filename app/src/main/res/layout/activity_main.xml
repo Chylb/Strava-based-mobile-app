@@ -49,4 +49,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/syncButton" />
+
+    <Button
+        android:id="@+id/refreshTokenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh token"
+        app:layout_constraintBottom_toTopOf="@+id/syncButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoutButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,14 +14,18 @@ import androidx.core.app.ActivityCompat
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.android.volley.toolbox.Volley.newRequestQueue
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.json.JSONArray
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
     lateinit var syncButton: Button
+    lateinit var refreshTokenButton: Button
     lateinit var printButton: Button
     lateinit var logoutButton: Button
     lateinit var startActButton: Button
@@ -74,7 +78,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         startActButton = findViewById(R.id.startActivity)
-
         startActButton.setOnClickListener {
             var permission = Manifest.permission.ACCESS_FINE_LOCATION
             var granted = PackageManager.PERMISSION_GRANTED
@@ -84,6 +87,11 @@ class MainActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(this, arrayOf(permission), 1)
             }
 
+        }
+
+        refreshTokenButton = findViewById(R.id.refreshTokenButton)
+        refreshTokenButton.setOnClickListener {
+            refreshToken()
         }
 
         loadActivities()
@@ -197,5 +205,63 @@ class MainActivity : AppCompatActivity() {
         }
 
         makeRequest(1, lastSync, activityList)
+    }
+
+    private fun refreshToken() {
+        val clientId = BuildConfig.CLIENT_ID
+        val clientSecret = BuildConfig.CLIENT_SECRET
+        val refreshToken =
+            getSharedPreferences("user", Context.MODE_PRIVATE).getString("refresh_token", "")
+
+        val url =
+            "https://www.strava.com/oauth/token?client_id=$clientId&client_secret=$clientSecret&refresh_token=$refreshToken&grant_type=refresh_token"
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, null,
+            Response.Listener<JSONObject> { response ->
+                val accessToken = response.getString("access_token")
+                val refreshToken = response.getString("refresh_token")
+                val expiresAt = response.getLong("expires_at")
+
+                val preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+                with(preferences.edit()) {
+                    putString("access_token", accessToken)
+                    putString("refresh_token", refreshToken)
+                    putLong("expires_at", expiresAt)
+                    commit()
+                }
+                Toast.makeText(this, "Successfully refreshed token", Toast.LENGTH_SHORT).show()
+                logTokens()
+            },
+            Response.ErrorListener { err ->
+                Log.wtf("myTag", "Token refresh error")
+                Log.wtf("myTag", err.localizedMessage)
+                Toast.makeText(this, "Error. Could not refresh token", Toast.LENGTH_SHORT).show()
+            })
+
+        val queue = newRequestQueue(applicationContext)
+        queue.add(request)
+    }
+
+    private fun logTokens() {
+        Log.wtf("myTag", "USER TOKENS:")
+        Log.wtf(
+            "myTag", getSharedPreferences("user", Context.MODE_PRIVATE).getString(
+                "access_token",
+                "none"
+            )
+        )
+        Log.wtf(
+            "myTag", getSharedPreferences("user", Context.MODE_PRIVATE).getString(
+                "refresh_token",
+                "none"
+            )
+        )
+        Log.wtf(
+            "myTag", getSharedPreferences("user", Context.MODE_PRIVATE).getString(
+                "expires_at",
+                "none"
+            )
+        )
     }
 }
