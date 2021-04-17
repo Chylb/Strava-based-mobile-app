@@ -95,6 +95,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         loadActivities()
+
+//        val db = DataBaseHandler(this)
+//        db.insert(1L, "dwa")
+//
+//        val res = db.get(1L)
+//        Log.wtf("myTag", "db res $res")
     }
 
     //loads all activities from preferences to ActStorage
@@ -258,10 +264,9 @@ class MainActivity : AppCompatActivity() {
             )
         )
         Log.wtf(
-            "myTag", getSharedPreferences("user", Context.MODE_PRIVATE).getString(
-                "expires_at",
-                "none"
-            )
+            "myTag", getSharedPreferences("user", Context.MODE_PRIVATE).getLong(
+                "expires_at", -1L
+            ).toString()
         )
     }
 }

@@ -1,10 +1,17 @@
 package com.example.stravabasedapp
 
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import org.json.JSONObject
 
 class ActDetailsActivity : AppCompatActivity() {
     private var actId: Long = 0
@@ -34,5 +41,70 @@ class ActDetailsActivity : AppCompatActivity() {
         distanceView.text = activity.distance.toString()
         movingTimeView.text = secondsToString(activity.movingTime)
         averageSpeedView.text = activity.avgSpeed.toString()
+
+        //Log.wtf("myTag", "activity type ${activity.type}")
+        if(activity.type == "Run") {
+            val db = DataBaseHandler(this)
+            val detailsJson = db.get(actId)
+
+            if(detailsJson.isEmpty()) {
+                downloadActivityDetails(actId)
+            }
+            else {
+                showBestEfforts()
+            }
+        }
+    }
+
+    private fun showBestEfforts() {
+        val db = DataBaseHandler(this)
+        val json = db.get(actId)
+
+        val actJsonObj = JSONObject(json)
+        val bestEfforts = actJsonObj.getJSONArray("best_efforts")
+
+        for (i in 0 until bestEfforts.length()) {
+            val bestEffort = bestEfforts.getJSONObject(i)
+
+            val name = bestEffort.getString("name")
+            val pr_rank = bestEffort.get("pr_rank") // int or null
+            val pr_rank_string = pr_rank.toString()
+            val time = bestEffort.getInt("elapsed_time")
+            Log.wtf("myTag", "$name $pr_rank_string $time")
+        }
+    }
+
+    //downloads json of specific activity and stores it in database. Used because this is the only way to get activity best efforts
+    private fun downloadActivityDetails(id: Long) {
+        val uri =
+            Uri.Builder().scheme("https")
+                .authority("www.strava.com")
+                .path("/api/v3/activities/$id")
+                .appendQueryParameter(
+                    "access_token",
+                    getSharedPreferences("user", Context.MODE_PRIVATE).getString(
+                        "access_token",
+                        "x"
+                    )
+                )
+                .build().toString()
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, uri, null,
+            Response.Listener<JSONObject> { response ->
+
+                val db = DataBaseHandler(this)
+
+                Log.wtf("myTag", response.toString())
+                db.insert(id, response.toString())
+
+                showBestEfforts()
+            },
+            Response.ErrorListener { err ->
+                Log.wtf("myTag", err.localizedMessage)
+                Toast.makeText(this, "Could not get activity details", Toast.LENGTH_SHORT).show()
+            })
+        val queue = Volley.newRequestQueue(applicationContext)
+        queue.add(request)
     }
 }
