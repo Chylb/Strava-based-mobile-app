@@ -96,11 +96,7 @@ class MainActivity : AppCompatActivity() {
 
         loadActivities()
 
-//        val db = DataBaseHandler(this)
-//        db.insert(1L, "dwa")
-//
-//        val res = db.get(1L)
-//        Log.wtf("myTag", "db res $res")
+        Log.wtf("myTag", "version 3")
     }
 
     //loads all activities from preferences to ActStorage

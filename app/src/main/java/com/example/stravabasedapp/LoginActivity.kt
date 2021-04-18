@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         connectButton.setOnClickListener {
             intent = Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("https://www.strava.com/oauth/authorize?client_id=$clientId&response_type=code&redirect_uri=$redirectUri&approval_prompt=force&scope=activity:read_all")
+                Uri.parse("https://www.strava.com/oauth/authorize?client_id=$clientId&response_type=code&redirect_uri=$redirectUri&approval_prompt=force&scope=activity:read_all,activity:write")
             )
             startActivity(intent)
         }
