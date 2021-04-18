@@ -1,25 +1,29 @@
 package com.example.stravabasedapp
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
+import android.content.Context
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileReader
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class TrackActivity : AppCompatActivity() {
     lateinit var time: TextView
@@ -27,6 +31,7 @@ class TrackActivity : AppCompatActivity() {
     lateinit var startButton : Button
     lateinit var mapView : MapView
     private var isTracking: Boolean = false
+    internal var locations = mutableListOf<Location>()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +93,11 @@ class TrackActivity : AppCompatActivity() {
                             finishCoordinate!!.latitude,
                             finishCoordinate!!.longitude,
                             results)
+                        val temp = Location(LocationManager.GPS_PROVIDER)
+                        temp.latitude = finishCoordinate!!.latitude
+                        temp.longitude = finishCoordinate!!.longitude
+                        temp.time = lastLoc.time
+                        locations.add(temp)
 
                         dist += results[0]
                         distance.text = String.format("%.2f m", dist)
@@ -98,6 +108,24 @@ class TrackActivity : AppCompatActivity() {
 
         startButton.setOnClickListener {
             if (isTracking) {
+                val dirPath = filesDir.absolutePath + File.separator + "newfoldername"
+                val projDir = File(dirPath)
+                if (!projDir.exists())
+                    Log.d("CREATION", "NOT CREATED")
+
+                val f = File(projDir,"file")
+                if (f.exists())
+                    Log.d("CREATION","Temp File created: "
+                            + f.absolutePath);
+                else
+                    Log.d("CREATION","Temp File cannot be created: "
+                            + f.absolutePath);
+                GPX.writePath(file= f, n="activity", points=locations)
+                val inputStream: InputStream = f.inputStream()
+
+                val inputString = inputStream.bufferedReader().use { it.readText() }
+                println(inputString)
+
                 handler.removeCallbacksAndMessages(null)
                 LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(locationListener)
             } else {
