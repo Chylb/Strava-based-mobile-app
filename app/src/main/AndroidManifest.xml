@@ -16,14 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StravaBasedApp">
-        <activity android:name=".ShowActActivity">
-
-        </activity>
+        <activity android:name=".GetName"></activity>
+        <activity android:name=".ShowActActivity"></activity>
         <activity android:name=".TrackActivity">
+            android:parentActivityName=".MainActivity"/>
         </activity>
-        <activity android:name=".ActDetailsActivity">
-
-        </activity>
+        <activity android:name=".ActDetailsActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,14 +41,13 @@
                     android:scheme="strava-based-app" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAquo-B-d3HH6CbsvccHJ8GNBP5n3xDBKM" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
     </application>
-
 
 </manifest>

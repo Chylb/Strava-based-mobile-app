@@ -2,6 +2,7 @@ package com.example.stravabasedapp
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
@@ -13,9 +14,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -29,7 +28,6 @@ import java.io.File
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class TrackActivity : AppCompatActivity() {
@@ -39,6 +37,7 @@ class TrackActivity : AppCompatActivity() {
     lateinit var mapView: MapView
     private var isTracking: Boolean = false
     internal var locations = mutableListOf<Location>()
+    internal lateinit var nameOfActivity: String
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +49,9 @@ class TrackActivity : AppCompatActivity() {
         distance.text = "0 m"
         startButton = findViewById(R.id.startButton)
         mapView = findViewById(R.id.mapView)
+
+        nameOfActivity = intent.getStringExtra("nameAct").toString()
+        Log.d("CREATION2", nameOfActivity)
 
 
         var duration: Long = 0
@@ -141,7 +143,7 @@ class TrackActivity : AppCompatActivity() {
                     f.createNewFile()
                 }
 
-                GPX.writePath(file = f, n = "activity", points = locations)
+                GPX.writePath(file = f, n = nameOfActivity!!, points = locations)
                 val inputStream: InputStream = f.inputStream()
 
                 val inputString = inputStream.bufferedReader().use { it.readText() }
@@ -152,6 +154,7 @@ class TrackActivity : AppCompatActivity() {
                 handler.removeCallbacksAndMessages(null)
                 LocationServices.getFusedLocationProviderClient(this)
                     .removeLocationUpdates(locationListener)
+                finish()
             } else {
                 dist = 0f
                 startCoordinate = null
@@ -224,6 +227,7 @@ class TrackActivity : AppCompatActivity() {
             Uri.Builder().scheme("https")
                 .authority("www.strava.com")
                 .path("/api/v3/uploads")
+                .appendQueryParameter("name", nameOfActivity)
                 .appendQueryParameter("data_type", "gpx")
                 .appendQueryParameter("activity_type", "run")
                 .appendQueryParameter(
@@ -234,6 +238,7 @@ class TrackActivity : AppCompatActivity() {
                     )
                 )
                 .build().toString()
+        Log.d("CREAT", uri)
 
         val volleyMultipartRequest: VolleyMultipartRequest =
             object : VolleyMultipartRequest(

@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             var permission = Manifest.permission.ACCESS_FINE_LOCATION
             var granted = PackageManager.PERMISSION_GRANTED
             if (ActivityCompat.checkSelfPermission(this, permission) == granted) {
-                startActivity(Intent(this, TrackActivity::class.java))
+                startActivity(Intent(this, GetName::class.java))
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(permission), 1)
             }
