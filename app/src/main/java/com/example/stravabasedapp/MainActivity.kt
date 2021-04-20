@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 
         loadActivities()
 
-        Log.wtf("myTag", "version 3")
+        Log.wtf("myTag", "version 4")
     }
 
     //loads all activities from preferences to ActStorage

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.stravabasedapp.utils.secondsToString
 import java.text.DecimalFormat
 
 class ActivitiesAdapter(var dataSet: MutableList<Activity>, val context: Context) :
@@ -43,7 +44,8 @@ class ActivitiesAdapter(var dataSet: MutableList<Activity>, val context: Context
             df.format(activity.distance))
         viewHolder.pace.text = context.getString(R.string.speed,
             df.format(activity.speed))
-        viewHolder.time.text = secondsToString(activity.elapsedTime)
+        viewHolder.time.text =
+            secondsToString(activity.elapsedTime)
 
         viewHolder.itemView.setOnClickListener { goToActDetails(activity) }
     }

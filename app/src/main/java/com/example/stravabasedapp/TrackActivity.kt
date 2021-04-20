@@ -2,7 +2,6 @@ package com.example.stravabasedapp
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
@@ -16,6 +15,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
+import com.example.stravabasedapp.utils.GPX
+import com.example.stravabasedapp.utils.VolleyMultipartRequest
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap

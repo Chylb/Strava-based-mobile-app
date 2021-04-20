@@ -1,4 +1,4 @@
-package com.example.stravabasedapp
+package com.example.stravabasedapp.utils
 
 fun secondsToString(seconds: Int): String {
     val h = seconds / 3600;

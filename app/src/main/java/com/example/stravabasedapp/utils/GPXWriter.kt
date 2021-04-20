@@ -1,7 +1,6 @@
-package com.example.stravabasedapp
+package com.example.stravabasedapp.utils
 
 import android.location.Location
-import android.util.Config
 import android.util.Log
 import java.io.File
 import java.io.FileWriter
@@ -18,7 +17,7 @@ object GPX {
         points: List<Location>
     ) {
         val header =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><gpx xmlns=\"http://www.topografix.com/com.example.stravabasedapp.GPX/1/1\" creator=\"MapSource 6.15.5\" version=\"1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"  xsi:schemaLocation=\"http://www.topografix.com/com.example.stravabasedapp.GPX/1/1 http://www.topografix.com/com.example.stravabasedapp.GPX/1/1/gpx.xsd\"><trk>\n"
+            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><gpx xmlns=\"http://www.topografix.com/com.example.stravabasedapp.utils.GPX/1/1\" creator=\"MapSource 6.15.5\" version=\"1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"  xsi:schemaLocation=\"http://www.topografix.com/com.example.stravabasedapp.utils.GPX/1/1 http://www.topografix.com/com.example.stravabasedapp.utils.GPX/1/1/gpx.xsd\"><trk>\n"
         val name = "<name>$n</name><trkseg>\n"
         var segments = ""
         val df: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")

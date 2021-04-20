@@ -11,6 +11,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.stravabasedapp.utils.secondsToString
 import org.json.JSONObject
 
 class ActDetailsActivity : AppCompatActivity() {
@@ -39,7 +40,8 @@ class ActDetailsActivity : AppCompatActivity() {
 
         nameView.text = activity.actName
         distanceView.text = activity.distance.toString()
-        movingTimeView.text = secondsToString(activity.movingTime)
+        movingTimeView.text =
+            secondsToString(activity.movingTime)
         averageSpeedView.text = activity.avgSpeed.toString()
 
         //Log.wtf("myTag", "activity type ${activity.type}")
